@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genvisage</title>
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <!-- MATERIALIZE -->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/3e7e255aa9.js"></script>
+
+
+    <!-- Google fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Archivo+Narrow' rel='stylesheet' type='text/css'>
+
+    <!--Including StyleSheets-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index-styles.css') }}">
+</head>
+
+<body>
+
+<p class="black-text " style="font-size: 120%; font-family: 'Archivo Narrow', sans-serif; ">
+    Choose a dataset to begin with.
+</p>
+
+<select onchange="window.location.href ='/load?dataset='+this.value;";>
+    <option style="color: white"  disabled selected>Available datasets</option>
+    {% for dataset in datasets %}
+        <option
+                value="{{ dataset }}">{{ dataset }}</option>
+    {% endfor %}
+</select>
+
+<script>
+    $(document).ready(function () {
+        $('select').material_select();
+    });
+</script>
+
+</body>
+</html>

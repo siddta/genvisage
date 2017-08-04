@@ -1,0 +1,85 @@
+.nav-wrapper {
+  z-index: 10;
+  overflow: hidden;
+  border: 0;
+}
+  .nav-wrapper .brand-logo{
+    padding-left: 20px;
+    font-size: 150%;
+    }
+
+.main-row {
+  margin: 0;
+  min-height: calc(100vh - 114px); }
+  .main-row .pane {
+    padding-top: 20px;
+    padding-bottom: 20px; }
+    .main-row .pane .pane-section .pane-section-title {
+      margin-bottom: 30px; }
+      .main-row .pane .pane-section .pane-section-title h1, .main-row .pane .pane-section .pane-section-title h2, .main-row .pane .pane-section .pane-section-title h3 {
+        font-size: 150%;
+        font-family: 'Oxygen', sans-serif }
+    .main-row .pane .pane-section .btn {
+      margin-bottom: 30px; }
+    .main-row .pane .pane-section .draw-instructions ul li {
+      margin-bottom: 15px; }
+    .main-row .pane .pane-section .pane-section-element {
+      margin-bottom: 30px; }
+  .main-row .col {
+    margin-left: 0; }
+
+.results .results-title {
+  margin-bottom: 40px; }
+  .results .results-title h1, .results .results-title h2, .results .results-title h3 {
+    color: indianred;
+    font-size: 150%; }
+.results .result-card {
+  padding: 0;
+  margin: 20px;
+  height: 300px;
+  width: 90%; }
+  .results .result-card .result-svg {
+    margin: auto;
+    height: 100%;
+    width: 100%; }
+
+/*NEW CSS*/
+#main-chart {
+  display: block;
+  margin: auto;
+  padding: 0;
+  height: 500px;
+  width: 90%; }
+
+#main {
+  background: rgba(255, 255, 255, 0.5);
+  overflow: auto; }
+
+.axis text {
+  font-size: 10px; }
+
+.axis-label {
+  font-size: 13px; }
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+  vector-effect: non-scaling-stroke;
+  z-index: 50; }
+
+.hexagon {
+  fill: white;
+  stroke: #000;
+  stroke-width: .5px; }
+
+.chart-title {
+  font-size: 16px; }
+
+#toast-container {
+  top: auto;
+  right: auto;
+  bottom: 3%;
+  left: 7%; }
+
+/*# sourceMappingURL=style.css.map */

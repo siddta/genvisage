@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+
+    <!-- MATERIALIZE -->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/3e7e255aa9.js"></script>
+
+
+    <!-- Google fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+
+    <!--Including StyleSheets-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper grey darken-4">
+        <a href="/" class="brand-logo center ">Zenvisage Scatter Search</a>
+    </div>
+</nav>
+
+<div class="results container">
+    <div class="results-title">
+        <h3 class="center-align ">
+            Results
+        </h3>
+        <hr style="width:50%">
+    </div>
+<div class="card-panel grey lighten-3">
+    <strong>Algorithm Used:</strong> {{ results.algorithm }} <br><br>
+    <strong>Description:</strong> {{ results.description }} <br><br>
+    <strong>Candidates categorized by (Z-Axis):</strong> {{ results.category }} <br><br>
+</div>
+
+    {% for result in results.result %}
+        <div class="card result-card">
+            <div class="row" style="height: 100%">
+                <div class="col s7" style="height: 100%">
+                    <svg class="result-svg" id="result-svg-{{ loop.index0 }}">
+                    </svg>
+                </div>
+                <div class="col s5 valign-wrapper" style="height: 100%">
+
+                    <p class="light italic" style="padding: 20px">
+                        <strong>Candidate:</strong> {{ result.dataset_name }}<br><br>
+                        <strong>Number of points inside all
+                            Polygons: </strong> {{ result.numOfPointsInPolygons }}<br><br>
+                        <strong>Total number of points: </strong> {{ result.numOfPoints }}<br><br>
+                        <strong>Score:</strong> {{ result.score }}
+                    </p>
+
+                </div>
+            </div>
+
+
+        </div>
+    {% endfor %}
+</div>
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<!--Including d3-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+<script src="http://d3js.org/d3.hexbin.v0.js"></script>
+<!--Including Script files-->
+<script src="{{ url_for('static', filename='js/renderPlot.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main-script.js') }}"></script>
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+<script>
+    function getResults() {
+        return {{ results|tojson }};
+    }
+</script>
+</body>
+</html>

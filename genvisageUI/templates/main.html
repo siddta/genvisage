@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genvisage</title>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <!-- MATERIALIZE -->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/3e7e255aa9.js"></script>
+
+    <!-- Google fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen,700' rel='stylesheet'>
+
+    <!--Including StyleSheets-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!--Including d3-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+    <script src="http://d3js.org/d3.hexbin.v0.js"></script>
+
+    <!--Including Script files-->
+    <script src="{{ url_for('static', filename='js/renderPlot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main-script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tour.js') }}"></script>
+
+    <!-- Including Hopscotch -->
+    <script src="{{ url_for('static', filename='ext-libs/hopscotch/js/hopscotch.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ext-libs/hopscotch/css/hopscotch.min.css') }}">
+
+
+</head>
+<body>
+
+<nav>
+    <div class="nav-wrapper  light-blue accent-3">
+        <a href="/" class="brand-logo" style = "font-family: 'Oxygen', sans-serif;">Genvisage </a>
+    </div>
+</nav>
+
+<div class="row" style="margin: 0; padding: 0"></div>
+<div class="row main-row">
+    <div class="col l3 s12 pane ">
+        <div class="pane-section container">
+            <div class="pane-section-title">
+                <h3 class="center-align" style="font-size: 20px;">
+                    Dataset Settings
+                </h3>
+                <hr>
+            </div>
+
+            <div class="input-field pane-section-element">
+                <select onchange=" updateOptions(0,this.value)" ;>
+                    <option value="" disabled selected>Choose feature 1</option>
+                    {% for column in dataset.column_names %}
+                        <option {% if loop.index0==0 %}selected{% endif %}
+                                value="{{ loop.index0 }}">{{ column }}</option>
+                    {% endfor %}
+                </select>
+                <label>Feature 1 (X Axis)</label>
+            </div>
+
+            <div class="input-field pane-section-element">
+                <select onchange="if (this.selectedIndex) updateOptions(1,this.value)" ;>
+                    <option value="" disabled selected>Choose feature 2</option>
+                    {% for column in dataset.column_names %}
+                        <option {% if loop.index0==1 %}selected{% endif %}
+                                value="{{ loop.index0 }}">{{ column }}</option>
+                    {% endfor %}
+                </select>
+                <label>Feature 2 (Y Axis)</label>
+            </div>
+
+            <button id="update-dataset-settings"
+                    onclick="
+                    updateRepresentativePlot();
+                    ">Update
+            </button>
+
+        </div>
+    </div>
+
+    <div class="col l6 s12 pane">
+        <div class="pane-section">
+            <div class="pane-section-title container">
+                <h3 class="center-align" style="font-size: 20px;">
+                    Representative Plot
+                </h3>
+                <hr>
+            </div>
+
+            <svg id="main-chart" class="card">
+            </svg>
+    </div>
+
+    <div>
+        <fieldset>
+            <label>Type in Gene Identifiers: </label>
+            <input type = "text" id = "txtName" />
+            <input type = "button" value = "Submit" onclick = "receiveGeneIdentifiers()"/>
+            <input type = "text" id = "txtOutput" />
+        </fieldset>
+    </div>    
+
+</div>
+
+
+<script>
+    function setDataset() {
+        currentData = {{ dataset|tojson }};
+    }
+</script>
+
+</body>
+</html>
