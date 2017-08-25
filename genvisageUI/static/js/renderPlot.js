@@ -9,7 +9,8 @@ var scatter;
 var getBrushPoints;
 
 function drawScatter(options) {
-    var container, brushable, data, xlabel, ylabel, title, brush;
+    var container, brushable, data, data2, xlabel, ylabel, title, brush;
+
     var scaleMultiplier = 1.05;
     var infoToReturn = {};
     //Find an element to render the chart
@@ -24,9 +25,19 @@ function drawScatter(options) {
 
     if ('data' in options) {
         data = options['data'];
+        window.alert("Data " + data);
     }
     else
         data = {};
+
+    if('data2' in options) {
+        data2 = options['data2'];
+        window.alert("Data2 " + data2);
+    }
+    else
+        data2 = {};
+
+
     var titleExists = true;
     if (options.title) {
         title = options['title'];
@@ -172,7 +183,18 @@ function drawScatter(options) {
         var point = [xScale(data[i]['x']), yScale(data[i]['y'])]
         points[i] = point;
     }
+    
+    window.alert("Points: " + points);
 
+    var points2 = new Array(data2.length)
+
+    for(var i = 0; i < data2.length; i++) {
+        var point2 = [xScale(data2[i]['x']), yScale(data2[i]['y'])]
+        points2[i] = point2;
+    }
+
+    window.alert("Points 2: " + points2);
+    
     /*
      Clip-path is made to clip anything that goes out of the svg
      */
@@ -298,142 +320,6 @@ function drawScatter(options) {
         svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
 
-    window.alert(infoToReturn.yMax); 
     return infoToReturn;
 }
 
-function drawPolygon() {
-    drawPolygonFlag = true;
-    enableButton('undo');
-    enableButton('green-polygon');
-    enableButton('red-polygon');
-    clickPolyPoints(d3.select("#main-chart"));
-}
-
-var currentPolygon;
-var polygonpointsSet = [];
-var drawPolygonFlag = false;
-var polygonStack = [];
-
-// adding double tap to  d3 events
-d3.selection.prototype.dblTap = function (callback) {
-    var last = 0;
-    return this.each(function () {
-        d3.select(this).on("touchstart", function (e) {
-            if ((d3.event.timeStamp - last) < 300) {
-                return callback(e);
-            }
-            last = d3.event.timeStamp;
-        });
-    });
-};
-
-/**
- * Function to help draw polygons on d3 chart
- * @param svg
- */
-function clickPolyPoints(svg) {
-    var polygon = svg.append('polygon').classed("userPolygon", true);
-    polypoints = [];
-    currentPolygon = polygon;
-    //currentPolypoints = polypoints;
-    if (drawPolygonFlag) {
-        svg.on("click", function () {
-            polypoints.push(d3.mouse(this)[0] + ',' + d3.mouse(this)[1]);
-            // console.log(polypoints.join(" "));
-            updatePolygon(polygon, polypoints);
-        });
-        svg.on("mousemove", function () {
-                var tempPolypoints = polypoints.slice();
-                tempPolypoints.push(d3.mouse(this)[0] + ',' + d3.mouse(this)[1]);
-                updatePolygon(polygon, tempPolypoints);
-
-            }
-        );
-        svg.on("contextmenu", function (data, index) {
-            //handle right click
-            //stop showing browser menu
-            d3.event.preventDefault();
-            polypoints = [];
-            updatePolygon(polygon, polypoints);
-        });
-        svg.on("mouseout", function () {
-            updatePolygon(polygon, polypoints);
-        });
-        svg.on("dblclick", function () {
-            //console.log("Double click! + ",this);
-            svg.on("click", null);
-            svg.on("mousemove", null);
-            svg.on("contextmenu", null);
-            svg.on("mouseout", null);
-            disableButton('undo');
-            highlightPolygon();
-        });
-
-        svg.dblTap(function () {
-            svg.on("click", null);
-            svg.on("mousemove", null);
-            svg.on("contextmenu", null);
-            svg.on("mouseout", null);
-            disableButton('undo');
-            highlightPolygon();
-        });
-    }
-
-}
-
-function highlightPolygon() {
-    d3.selectAll(".userPolygon")
-        .on("mouseover", function () {
-            d3.event.preventDefault();
-            //console.log("On a polygon!");
-            d3.select(this).classed("highlightPolygon", true);
-
-            d3.select(this).on("contextmenu", function () {
-                d3.select(this).remove()
-                d3.event.preventDefault();
-
-            })
-        })
-        .on("mouseleave", function () {
-            d3.select(this).classed("highlightPolygon", false);
-        })
-}
-
-function undoPolyPoints() {
-    if (polypoints.length > 0) {
-        polypoints = polypoints.slice(0, polypoints.length - 1);
-        updatePolygon(currentPolygon, polypoints);
-    }
-    if (polypoints.length == 0) {
-        disableButton('undo');
-    }
-
-}
-function changePolygonColorRed() {
-    currentPolygon.classed("red-polygon", true);
-}
-function changePolygonColorGreen() {
-    currentPolygon.classed("red-polygon", false);
-}
-
-function changePolygonColor(color) {
-    currentPolygon.attr("style", "fill: " + color);
-}
-function updatePolygon(polygon, polypoints) {
-    polygon.attr('points', "");
-    polygon.attr('points', polypoints);
-    //console.log(polygon.attr('points'));
-}
-
-function drawRandomChart() {
-
-    var options = {
-        'renderTo': "#main-chart",
-        'data': [{'x': 4, 'y': 55.5}, {'x': 3, 'y': 5}, {'x': 4, 'y': 2}, {'x': 5, 'y': 7}],
-        'x-label': "x-axis",
-        'y-label': "y-axis",
-        'title': 'The Iris Dataset'
-    };
-    return drawScatter(options);
-}

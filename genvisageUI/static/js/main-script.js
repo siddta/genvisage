@@ -2,9 +2,9 @@
  * Created by an5ra on 6/5/2016.
  */
 var currentOptions = {
-    xAxis: 0,
-    yAxis: 1,
-    zAxis: 2, 
+    xAxis: 1,
+    yAxis: 2,
+    zAxis: 3, 
     algorithm: 'Naive Algorithm'
 };
 var resultsWindow;
@@ -38,30 +38,62 @@ $(document).ready(function () {
  * @param zAxis
  */
  function receiveGeneIdentifiers(){
-  var txtName = document.getElementById("txtName");
-  var txtOutput = document.getElementById("txtOutput");
+    var txtName = document.getElementById("txtName");
+    var txtOutput = document.getElementById("txtOutput");
 
-  var genes = txtName.value;
-  var genesArray = new Array();
-  genesArray = genes.split(",");
+    var genes = txtName.value;
+    var genesArray = new Array();
+    genesArray = genes.split(",");
 
-  txtOutput.value = "Positive Set Recieved: " + genesArray;
+    txtOutput.value = "Positive Set Received: " + genesArray;
+
+    return genesArray;
   } 
 
-function formatDataset(renderTo, dataset, xAxis, yAxis, zAxis) {
-    var data = [];
+
+function formatDataset(renderTo, dataset, dataset2, xAxis, yAxis, zAxis) {
+    var data = []; //If inputted Gene Identifiers is empty, this will contain all data points. Otherwise data contains postive genes
+    var data2 = []; //If there are inputted gene identifers, tis data set contains all other points
+
+    var geneIdentifiers = receiveGeneIdentifiers(); 
+
     for (var i = 0; i < dataset.data.length; i++) {
-        data.push({x: dataset.data[i][xAxis], y: dataset.data[i][yAxis]});      
+
+            if(geneIdentifiers.length == 1){
+                data.push({x: dataset.data[i][xAxis], y: dataset.data[i][yAxis]}); 
+            }
+            else{
+                if(checkArray(geneIdentifiers, dataset.data[i][0])){
+                    data.push({x: dataset.data[i][xAxis], y: dataset.data[i][yAxis]});  
+                }    
+                else{
+                    data2.push({x: dataset.data[i][xAxis], y: dataset.data[i][yAxis]});
+                }
+            }
     }
-    window.alert({x: dataset.data[2][xAxis], y: dataset.data[2][yAxis]});
+
+    window.alert("Data 2: " + data2);
+
     var options = {
         'renderTo': renderTo,
         'data': data,
+        'data2': data2,
         'x-label': dataset.column_names[xAxis] ,
         'y-label': dataset.column_names[yAxis] ,
         'title': dataset.dataset_name
     };
     return options;
+}
+
+function checkArray(arr, val){
+    var check = false; 
+    for (var i = 0; i < arr.length; i++){
+        if(arr[i].valueOf() == val.valueOf()){
+            check = true; 
+            break; 
+        }
+    }
+    return check; 
 }
 
 function updateOptions(index, value) {
@@ -74,8 +106,13 @@ function updateOptions(index, value) {
 }
 
 function updateRepresentativePlot() {
-    var options = formatDataset("#main-chart", currentData, currentOptions.xAxis, currentOptions.yAxis, currentOptions.zAxis)
+    var options = formatDataset("#main-chart", currentData, currentOptions.xAxis, currentOptions.yAxis, currentOptions.zAxis);
+    //window.alert("Data2 length: " + data2.length);
+    //if (data2.length in options > 1)
+    //    var options 2 = formatDataset("#main-chart2", currentData, currentOptions.xAxis, currentOptions.yAxis, currentOptions.zAxis);
+
     currentRepresentativePlot = drawScatter(options);
+    //currentRepresentativePlot2 = drawScatter(options2);
 
 }
 
