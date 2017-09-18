@@ -72,7 +72,7 @@ function formatDataset(renderTo, dataset, dataset2, xAxis, yAxis, zAxis) {
             }
     }
 
-    window.alert("Data 2: " + data2);
+//    window.alert("Data 2: " + data2);
 
     var options = {
         'renderTo': renderTo,

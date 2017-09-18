@@ -25,14 +25,14 @@ function drawScatter(options) {
 
     if ('data' in options) {
         data = options['data'];
-        window.alert("Data " + data);
+//        window.alert("Data " + data);
     }
     else
         data = {};
 
     if('data2' in options) {
         data2 = options['data2'];
-        window.alert("Data2 " + data2);
+//        window.alert("Data2 " + data2);
     }
     else
         data2 = {};
@@ -184,7 +184,7 @@ function drawScatter(options) {
         points[i] = point;
     }
     
-    window.alert("Points: " + points);
+//    window.alert("Points: " + points);
 
     var points2 = new Array(data2.length)
 
